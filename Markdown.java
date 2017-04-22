@@ -17,8 +17,12 @@ public class Markdown{
 		while(in.hasNextLine()){
 			line = in.nextLine();
 
-			if(!in.hasNextLine())
-				text += line;
+			if(line.length() != 0){
+				if(text.length() != 0)
+					text += "\n" + line;
+				else
+					text = line;
+			}
 
 			if(line.length() == 0 || !in.hasNextLine()){
 				if(text.length() == 0)
@@ -34,9 +38,8 @@ public class Markdown{
 
 					matcher = li.matcher(text);
 					text = matcher.replaceAll("<li>$1</li>");
-					text = "<ul>\n"+text+"</ul>";
+					text = "<ul>\n"+text+"\n</ul>";
 				}else{
-					text = text.substring(0,text.length()-1);
 					text = "<p>" + text + "</p>";
 				}
 
@@ -46,12 +49,13 @@ public class Markdown{
 				matcher = link.matcher(text);
 				text = matcher.replaceAll("<a href=\"$2\">$1</a>");
 
-				result += text;
-				System.out.println(text);
+				result += text+"\n";
 				text = "";
-			}else{
-				text += line+"\n";
 			}
 		}
+
+		result = result.substring(0,result.length()-1);
+
+		System.out.println(result);
 	}
 }
